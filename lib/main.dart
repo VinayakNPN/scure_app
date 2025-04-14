@@ -20,17 +20,17 @@ class MyApp extends StatelessWidget {
     //   ),
     //   home: const MyHomePage(title: 'Scure Home Page'),
     // );
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Scure App'),
-        ),
-        body: Center(
-          child: Text(
-            'Hello, Scure App!',
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-        ),
-      ),
+      // home: Scaffold(
+      //   appBar: AppBar(
+      //     title: const Text('Scure App'),
+      //   ),
+      //   body: Center(
+      //     child: Text(
+      //       'Hello, Scure App!',
+      //       style: Theme.of(context).textTheme.displayMedium,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
