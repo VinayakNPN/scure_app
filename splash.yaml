@@ -11,3 +11,6 @@ flutter_native_splash:
     image_dark: logo_dark.png
 
   web: false  
+
+
+# to remove Splash: flutter pub run flutter_native_splash:remove  
