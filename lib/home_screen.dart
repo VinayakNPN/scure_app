@@ -7,7 +7,8 @@ import 'dart:io';
 import 'theme.dart';
 
 class AppTheme {
-  static const Color primaryColor = Colors.lightBlue;
+  static const Color primaryColor = Colors.blueAccent; // Your primary color
+  static const Color secondaryColor = Colors.blueAccent; // Your secondary color
 }
 
 class HomeScreen extends StatefulWidget {
@@ -19,12 +20,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Gemini gemini = Gemini.instance;
+  late final Gemini gemini;
   final TextEditingController _promptController = TextEditingController();
   String? result;
   File? selectedImage;
   bool isLoading = false;
   bool withImage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    try {
+      gemini = Gemini.instance;
+      print('Gemini initialized successfully'); // Debug log
+    } catch (e) {
+      print('Gemini initialization error: $e');
+    }
+  }
 
   @override
   void dispose() {
@@ -40,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: AppTheme.primaryColor,
         title: const Text(
-          "Study-Buddy",
+          "S-cure",
           style: TextStyle(
             color: Colors.white, 
             fontWeight: FontWeight.bold,
@@ -83,10 +95,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 )
                               : SelectableText(
-                                  result!,
+                                  result ?? "No response yet",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: isDarkMode ? Colors.white : Colors.black,
+                                    color: result?.startsWith("Error:") ?? false 
+                                        ? Colors.red 
+                                        : (isDarkMode ? Colors.white : Colors.black),
                                   ),
                                 ),
                         ),
@@ -216,26 +230,37 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       if (selectedImage != null) {
         final imageBytes = await selectedImage!.readAsBytes();
-        final response = await gemini.textAndImage(
+        
+        // For image-based prompts
+        final geminiResponse = await gemini.textAndImage(
           text: promptText,
           images: [imageBytes],
         );
-        setState(() {
-          result = response?.output ?? "No response received";
-          isLoading = false;
-        });
+        
+        if (geminiResponse != null) {
+          setState(() {
+            result = geminiResponse.content?.parts?.first.text ?? "No response received";
+            isLoading = false;
+          });
+        }
       } else {
+        // For text-only prompts
         final response = await gemini.text(promptText);
-        setState(() {
-          result = response?.output ?? "No response received";
-          isLoading = false;
-        });
+        print('API Response: $response'); // Debug log
+        
+        if (response != null) {
+          setState(() {
+            result = response.content?.parts?.first.text ?? "No response received";
+            isLoading = false;
+          });
+        }
       }
       
       _promptController.clear();
     } catch (e) {
+      print('Gemini API Error Details: $e'); // Detailed error logging
       setState(() {
-        result = "Error: ${e.toString()}";
+        result = "Error: $e";
         isLoading = false;
       });
     }

@@ -13,13 +13,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
-  flutter_native_splash: ^2.4.6
-  shared_preferences: ^2.2.2
-  email_validator: ^2.1.17
   flutter_gemini: ^2.0.3
   image_picker: ^1.0.7
   json_annotation: ^4.8.1
+  shared_preferences: ^2.2.2
+  # email_validator: ^2.1.17  # Add this line
 
 dev_dependencies:
   flutter_test:

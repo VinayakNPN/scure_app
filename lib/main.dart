@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -10,16 +9,22 @@ import 'package:scure_app/config_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize SharedPreferences
-  await SharedPreferences.getInstance();
-  
-  // Initialize Gemini
-  final configFile = await rootBundle.loadString('assets/config.json');
-  final configData = json.decode(configFile);
-  final config = ConfigModel.fromJson(configData);
-  Gemini.init(apiKey: config.geminiAPIkey);
-
-  runApp(const MyApp());
+  try {
+    final configFile = await rootBundle.loadString('assets/config.json');
+    final configData = json.decode(configFile);
+    final config = ConfigModel.fromJson(configData);
+    
+    // Initialize Gemini with additional settings
+    Gemini.init(
+      apiKey: config.geminiAPIkey,
+      enableDebugging: true, // Keep this for debugging
+    );
+    
+    runApp(const MyApp());
+  } catch (e) {
+    print('Initialization error: $e');
+    rethrow;
+  }
 }
 
 class MyApp extends StatelessWidget {

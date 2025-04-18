@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import 'signup_screen.dart';
@@ -18,6 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _authService = AuthService();
   bool _isLoading = false;
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
@@ -74,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
-                      if (!EmailValidator.validate(value)) {
+                      if (!_isValidEmail(value)) {
                         return 'Please enter a valid email';
                       }
                       return null;
