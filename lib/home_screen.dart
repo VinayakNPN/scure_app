@@ -1,7 +1,14 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'theme.dart';
+
+class AppTheme {
+  static const Color primaryColor = Colors.lightBlue;
+}
 
 class HomeScreen extends StatefulWidget {
   // ignore: use_super_parameters
@@ -27,25 +34,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppTheme.primaryColor,
         title: const Text(
           "Study-Buddy",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.lightBlue[50]!,
-              Colors.lightBlue[100]!,
-            ],
+          style: TextStyle(
+            color: Colors.white, 
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
           ),
         ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Container(
+        color: isDarkMode ? Colors.black : Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -59,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(16.0),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: isDarkMode ? Colors.grey[900] : Colors.white,
                             borderRadius: BorderRadius.circular(12.0),
                             boxShadow: [
                               BoxShadow(
@@ -71,14 +77,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           child: isLoading
-                              ? const Center(
+                              ? Center(
                                   child: CircularProgressIndicator(
-                                    color: Colors.lightBlue,
+                                    color: AppTheme.primaryColor,
                                   ),
                                 )
                               : SelectableText(
                                   result!,
-                                  style: const TextStyle(fontSize: 16),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: isDarkMode ? Colors.white : Colors.black,
+                                  ),
                                 ),
                         ),
                       const SizedBox(height: 20),
@@ -130,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isDarkMode ? Colors.grey[900] : Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
@@ -141,37 +150,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        // Camera button
-                        IconButton(
-                          icon: const Icon(Icons.camera_alt, color: Colors.lightBlue),
-                          onPressed: () => _getImage(ImageSource.camera),
+                    IconButton(
+                      icon: Icon(Icons.camera_alt, color: AppTheme.primaryColor),
+                      onPressed: () => _getImage(ImageSource.camera),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.photo, color: AppTheme.primaryColor),
+                      onPressed: () => _getImage(ImageSource.gallery),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _promptController,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
-                        // Gallery button
-                        IconButton(
-                          icon: const Icon(Icons.photo, color: Colors.lightBlue),
-                          onPressed: () => _getImage(ImageSource.gallery),
-                        ),
-                        // Text input field
-                        Expanded(
-                          child: TextField(
-                            controller: _promptController,
-                            decoration: const InputDecoration(
-                              hintText: "Ask me anything related to Skin...",
-                              border: InputBorder.none,
-                            ),
-                            maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: "Ask me anything...",
+                          hintStyle: TextStyle(
+                            color: isDarkMode ? Colors.white70 : Colors.black54,
                           ),
+                          border: InputBorder.none,
                         ),
-                        // Send button
-                        IconButton(
-                          icon: const Icon(Icons.send, color: Colors.lightBlue),
-                          onPressed: _sendPrompt,
-                        ),
-                      ],
+                        maxLines: null,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send, color: AppTheme.primaryColor),
+                      onPressed: _sendPrompt,
                     ),
                   ],
                 ),
