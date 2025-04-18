@@ -18,6 +18,10 @@ dependencies:
 
   flutter_native_splash: ^2.4.6
 
+  shared_preferences: ^2.2.2  # For local storage
+
+  email_validator: ^2.1.17    # For email validation
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -39,10 +43,8 @@ flutter:
         - asset: assets/fonts/Montserrat-Bold.otf
           weight: 700
 
-  assets:
-    - assets/images/facebook.png
-    - assets/images/google.png
 
- 
+
+
 
 
