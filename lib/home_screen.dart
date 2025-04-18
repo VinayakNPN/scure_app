@@ -5,6 +5,7 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'theme.dart';
+import 'services/ai_service.dart';
 
 class AppTheme {
   static const Color primaryColor = Colors.blueAccent; // Your primary color
@@ -20,22 +21,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final Gemini gemini;
   final TextEditingController _promptController = TextEditingController();
+  final GeminiService _geminiService = GeminiService();
   String? result;
   File? selectedImage;
   bool isLoading = false;
-  bool withImage = false;
 
   @override
   void initState() {
     super.initState();
-    try {
-      gemini = Gemini.instance;
-      print('Gemini initialized successfully'); // Debug log
-    } catch (e) {
-      print('Gemini initialization error: $e');
-    }
   }
 
   @override
@@ -227,42 +221,17 @@ class _HomeScreenState extends State<HomeScreen> {
       result = null;
     });
 
-    try {
-      if (selectedImage != null) {
-        final imageBytes = await selectedImage!.readAsBytes();
-        
-        // For image-based prompts
-        final geminiResponse = await gemini.textAndImage(
-          text: promptText,
-          images: [imageBytes],
-        );
-        
-        if (geminiResponse != null) {
-          setState(() {
-            result = geminiResponse.content?.parts?.first.text ?? "No response received";
-            isLoading = false;
-          });
-        }
-      } else {
-        // For text-only prompts
-        final response = await gemini.text(promptText);
-        print('API Response: $response'); // Debug log
-        
-        if (response != null) {
-          setState(() {
-            result = response.content?.parts?.first.text ?? "No response received";
-            isLoading = false;
-          });
-        }
+    final response = await _geminiService.generateResponse(
+      promptText,
+      image: selectedImage,
+    );
+
+    setState(() {
+      result = response.text;
+      isLoading = false;
+      if (!response.isError) {
+        _promptController.clear();
       }
-      
-      _promptController.clear();
-    } catch (e) {
-      print('Gemini API Error Details: $e'); // Detailed error logging
-      setState(() {
-        result = "Error: $e";
-        isLoading = false;
-      });
-    }
+    });
   }
 }

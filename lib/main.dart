@@ -14,10 +14,11 @@ void main() async {
     final configData = json.decode(configFile);
     final config = ConfigModel.fromJson(configData);
     
-    // Initialize Gemini with additional settings
+    // Initialize Gemini with improved settings
     Gemini.init(
       apiKey: config.geminiAPIkey,
-      enableDebugging: true, // Keep this for debugging
+      enableDebugging: true,
+      generationConfig: GenerationConfig(maxOutputTokens: 2048),
     );
     
     runApp(const MyApp());
