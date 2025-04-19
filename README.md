@@ -1,8 +1,6 @@
 # S-cure App
 
 <div align="center">
-  
-![S-cure Logo](https://img.shields.io/badge/S--cure-AI%20Security%20Assistant-0118D8?style=for-the-badge&logo=flutter&logoColor=white)
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.7%2B-blue?style=flat-square&logo=flutter)](https://flutter.dev/)
 [![Gemini AI](https://img.shields.io/badge/Powered%20by-Gemini%20AI-4285F4?style=flat-square&logo=google)](https://ai.google.dev/)
@@ -13,19 +11,6 @@
 ## 📱 Overview
 
 S-cure is a modern Flutter application that leverages the power of Google's Gemini AI to provide intelligent responses to user queries. The app allows users to interact with Gemini AI through text inputs and image uploads, making it versatile for various use cases.
-
-<div align="center">
-  <table>
-    <tr>
-      <td><img src="/api/placeholder/250/500" alt="Login Screen" /></td>
-      <td><img src="/api/placeholder/250/500" alt="Home Screen" /></td>
-    </tr>
-    <tr>
-      <td align="center"><strong>Secure Login</strong></td>
-      <td align="center"><strong>AI Assistant</strong></td>
-    </tr>
-  </table>
-</div>
 
 ## ✨ Features
 
