@@ -8,8 +8,8 @@ import 'theme.dart';
 import 'services/ai_service.dart';
 
 class AppTheme {
-  static const Color primaryColor = Colors.blueAccent; // Your primary color
-  static const Color secondaryColor = Colors.blueAccent; // Your secondary color
+  static const Color primaryColor = Colors.blueAccent; 
+  static const Color secondaryColor = Colors.blueAccent;
 }
 
 class HomeScreen extends StatefulWidget {
